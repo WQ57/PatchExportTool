@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="User">
+
+	<!-- Use type aliases to avoid typing the full classname every time. -->
+	<typeAlias alias="user" type="com.wq.vo.UserVO" />
+
+	<insert id="insertUserByVO" parameterClass="user">
+		INSERT INTO
+		USER(user_name,password,user_img,auto_login,fix_password)
+		VALUES(#user_name#,#password#,#user_img#,#auto_login#,#fix_password#)
+	</insert>
+
+	<select id="selectUserByVO" parameterClass="user" resultClass="user">
+		SELECT *
+		FROM USER
+		WHERE 1=1
+		<isNotEmpty property="user_id">   
+		    and user_id = #user_id#
+		</isNotEmpty>
+		<isNotEmpty property="user_name"> 
+			and user_name = #user_name#
+		</isNotEmpty>
+		<isNotEmpty property="password"> 
+			and password = #password#
+		</isNotEmpty>
+	</select>
+
+	<select id="selectUserByName" parameterClass="String" resultClass="user">
+	    SELECT *
+		FROM USER 
+		WHERE user_name = #user_name#
+	</select>
+	
+	<select id="getUser" parameterClass="int" resultClass="user">
+		SELECT *
+		FROM USER
+		WHERE user_id = #user_id#
+	</select>
+
+	<update id="updateUserByVO" parameterClass="user">
+		UPDATE USER SET
+		user_id = user_id,
+		<isNotEmpty property="user_name"> 
+			user_name = #user_name#,
+		</isNotEmpty>
+		<isNotEmpty property="password"> 
+			password = #password#,
+		</isNotEmpty>
+		<isNotEmpty property="user_img"> 
+			user_img = #user_img#,
+		</isNotEmpty>
+		<isNotEmpty property="auto_login"> 
+			auto_login = #auto_login#,
+		</isNotEmpty>
+		<isNotEmpty property="fix_password"> 
+			fix_password = #fix_password#,
+		</isNotEmpty>
+		user_id = user_id
+		WHERE user_id=#user_id#
+	</update>
+
+	<delete id="deleteUser" parameterClass="int">
+		DELETE FROM USER WHERE user_id=#user_id#
+	</delete>
+
+</sqlMap>
